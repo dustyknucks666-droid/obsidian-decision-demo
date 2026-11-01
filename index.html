@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OBSIDIAN — Decision Intelligence Demo</title>
+<style>
+  :root { --bg:#0f1419; --card:#1a2332; --accent:#4a90d9; --green:#28a745; --amber:#ffc107; --red:#dc3545; --text:#e8e8e8; --muted:#9aa0a6; --border:#2a3a4a; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+  .container { max-width:960px; margin:0 auto; padding:1.5rem; }
+  h1 { font-size:2rem; margin-bottom:0.5rem; }
+  h2 { color:var(--accent); margin:2rem 0 0.75rem; font-size:1.4rem; }
+  h3 { color:#b0c4de; margin:1rem 0 0.5rem; }
+  .tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:0.75rem; margin-right:6px; }
+  .tag-syn { background:#555; color:#fff; }
+  .tag-eng { background:#2980b9; color:#fff; }
+  .tag-ill { background:#8e44ad; color:#fff; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:1.25rem; margin:1rem 0; }
+  .btn { background:var(--accent); color:#fff; border:none; padding:0.6rem 1.2rem; border-radius:6px; cursor:pointer; font-size:1rem; margin:0.25rem; }
+  .btn:hover { opacity:0.85; }
+  .btn-outline { background:transparent; border:1px solid var(--accent); color:var(--accent); }
+  .option { cursor:pointer; transition:transform 0.1s; }
+  .option:hover { transform:translateY(-2px); }
+  .option.selected { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent); }
+  .grid { display:grid; gap:1rem; }
+  .grid-3 { grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
+  .grid-2 { grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); }
+  .metric { text-align:center; padding:1rem; }
+  .metric .val { font-size:2rem; font-weight:bold; color:var(--accent); }
+  .metric .lbl { font-size:0.85rem; color:var(--muted); }
+  .slider-row { margin:1rem 0; }
+  .slider-row label { display:block; margin-bottom:0.25rem; }
+  .slider-row input[type=range] { width:100%; }
+  .result-box { background:#1e2a3a; border-left:4px solid var(--accent); padding:1rem; margin:1rem 0; }
+  .abstain-box { background:#2a1e1e; border-left:4px solid var(--red); padding:1rem; margin:1rem 0; }
+  .pathway { display:flex; align-items:center; gap:0.5rem; margin:0.5rem 0; }
+  .pathway .arrow { color:var(--accent); }
+  .footer { margin-top:3rem; padding-top:1rem; border-top:1px solid var(--border); font-size:0.8rem; color:var(--muted); }
+  @media (max-width:600px) { h1{font-size:1.5rem;} .container{padding:1rem;} }
+  .hidden { display:none; }
+  .cta-box { background:#1e2a1e; border-left:4px solid var(--green); padding:1.5rem; margin:2rem 0; text-align:center; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>OBSIDIAN <span style="font-weight:300;color:var(--muted)">Decision Intelligence</span></h1>
+<p class="meta" style="color:var(--muted)">All inputs are synthetic. Engine outputs are unmodified. No customer data. No fabricated outcomes. Early development.</p>
+
+<!-- SECTION 1 -->
+<h2>1. The Challenge</h2>
+<div class="card">
+  <span class="tag tag-syn">SYNTHETIC SCENARIO</span>
+  <p>A 12-person member administration department faces a <strong>40% overtime increase</strong> over six months, a <strong>$5,000 intervention budget</strong>, and a <strong>90-day horizon</strong>. Three options exist. Which one is worth investigating?</p>
+  <div class="grid grid-3" style="margin-top:1rem;">
+    <div class="metric"><div class="val">12</div><div class="lbl">Staff</div></div>
+    <div class="metric"><div class="val">+40%</div><div class="lbl">Overtime increase</div></div>
+    <div class="metric"><div class="val">$5,000</div><div class="lbl">Budget</div></div>
+  </div>
+</div>
+
+<!-- SECTION 2 -->
+<h2>2. The Decision Lab</h2>
+<p>Select an option to inspect its causal logic, constraints, missing evidence, and risks. <span class="tag tag-eng">ENGINE OUTPUT</span></p>
+<div class="grid grid-3">
+  <div class="card option" id="opt-demand" onclick="selectOption('demand')">
+    <h3>Demand Reduction</h3>
+    <p style="font-size:0.9rem;color:var(--muted)">Reduce incoming demand to match current capacity.</p>
+    <p style="font-size:0.85rem;margin-top:0.5rem;"><strong>Decision:</strong> <span style="color:var(--red)">INSUFFICIENT_INFORMATION</span></p>
+  </div>
+  <div class="card option" id="opt-capacity" onclick="selectOption('capacity')">
+    <h3>Capacity Reallocation</h3>
+    <p style="font-size:0.9rem;color:var(--muted)">Reallocate existing staff across shifts/departments.</p>
+    <p style="font-size:0.85rem;margin-top:0.5rem;"><strong>Decision:</strong> <span style="color:var(--red)">INSUFFICIENT_INFORMATION</span></p>
+  </div>
+  <div class="card option" id="opt-scheduling" onclick="selectOption('scheduling')">
+    <h3>Scheduling Redesign</h3>
+    <p style="font-size:0.9rem;color:var(--muted)">Redesign scheduling rules (shift lengths, rotation, coverage).</p>
+    <p style="font-size:0.85rem;margin-top:0.5rem;"><strong>Decision:</strong> <span style="color:var(--red)">INSUFFICIENT_INFORMATION</span></p>
+  </div>
+</div>
+<div id="option-detail" class="card hidden">
+  <h3 id="detail-title"></h3>
+  <p id="detail-causal" style="color:var(--muted);font-style:italic;"></p>
+  <table style="width:100%;margin-top:0.75rem;border-collapse:collapse;">
+    <tr><th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Field</th><th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Value</th></tr>
+    <tr><td style="padding:6px;">Delivery feasible</td><td style="padding:6px;" id="d-feasible"></td></tr>
+    <tr><td style="padding:6px;">Reversible</td><td style="padding:6px;" id="d-reversible"></td></tr>
+    <tr><td style="padding:6px;">Downside risk</td><td style="padding:6px;" id="d-downside"></td></tr>
+    <tr><td style="padding:6px;">Economic verdict</td><td style="padding:6px;" id="d-econ"></td></tr>
+    <tr><td style="padding:6px;">Break-even benefit</td><td style="padding:6px;" id="d-be"></td></tr>
+    <tr><td style="padding:6px;">Missing evidence</td><td style="padding:6px;" id="d-missing"></td></tr>
+  </table>
+  <p style="margin-top:0.75rem;font-size:0.85rem;color:var(--muted);">Risks: <span id="d-risks"></span></p>
+</div>
+<div class="abstain-box" style="margin-top:1rem;">
+  <strong>OBSIDIAN abstains.</strong> No candidate has sufficient evidence for a decision. Break-even is NOT CALCULABLE because benefit magnitude is unknown. Human approval required for any action. <span class="tag tag-eng">ENGINE OUTPUT</span>
+</div>
+
+<!-- SECTION 3 -->
+<h2>3. Explore the Future <span class="tag tag-ill">ILLUSTRATIVE — NOT ENGINE-BACKED</span></h2>
+<p style="color:var(--muted);font-size:0.9rem;">Adjust illustrative assumptions to see how a hypothetical benefit would change the break-even picture. These are transparent arithmetic, not engine predictions. Actual engine results above remain unchanged.</p>
+<div class="card">
+  <div class="slider-row">
+    <label>Assumed hourly overtime rate ($): <span id="rate-val">25</span></label>
+    <input type="range" id="rate" min="10" max="60" value="25" oninput="updateCalc()">
+  </div>
+  <div class="slider-row">
+    <label>Assumed overtime hours saved per week: <span id="hrs-val">5</span></label>
+    <input type="range" id="hrs" min="1" max="40" value="5" oninput="updateCalc()">
+  </div>
+  <div class="slider-row">
+    <label>Intervention cost ($): <span id="cost-val">5000</span></label>
+    <input type="range" id="cost" min="0" max="20000" value="5000" step="500" oninput="updateCalc()">
+  </div>
+  <div class="result-box" id="calc-result">
+    <strong>Illustrative break-even:</strong> If 5 hrs/week saved at $25/hr = $125/week, the $5,000 intervention breaks even in 40 weeks. <em>This is arithmetic, not an engine output or prediction.</em>
+  </div>
+  <p style="font-size:0.8rem;color:var(--muted);">To move from illustrative to engine-backed: provide measured overtime cost, verified demand forecast, staffing schedule data, and cross-training inventory.</p>
+</div>
+
+<!-- SECTION 4 -->
+<h2>4. People and Prosperity</h2>
+<p style="color:var(--muted);font-size:0.9rem;">Possible causal pathways from business decisions to human outcomes. These are hypothesized, not proven. <span class="tag tag-ill">HYPOTHESIZED PATHWAYS</span></p>
+<div class="card">
+  <div class="pathway"><span class="arrow">→</span> <strong>Financial sustainability</strong> — reduced unplanned overtime spend → budget stability → capacity to invest in staff development</div>
+  <div class="pathway"><span class="arrow">→</span> <strong>Operational reliability</strong> — better scheduling → fewer coverage gaps → consistent service quality</div>
+  <div class="pathway"><span class="arrow">→</span> <strong>Customer experience</strong> — adequate staffing → shorter wait times → higher satisfaction</div>
+  <div class="pathway"><span class="arrow">→</span> <strong>Employee workload &amp; wellbeing</strong> — reduced overtime → lower burnout risk → improved retention</div>
+  <div class="pathway"><span class="arrow">→</span> <strong>Long-term resilience</strong> — evidence-based decisions → institutional learning → adaptive capacity</div>
+  <p style="margin-top:1rem;font-size:0.8rem;color:var(--muted);">OBSIDIAN's mission: help organizations make better decisions so that business performance and human flourishing reinforce each other. No outcome has been demonstrated in production.</p>
+</div>
+
+<!-- SECTION 5 -->
+<h2>5. Human Sovereignty</h2>
+<div class="card">
+  <p><strong>Evidence gaps identified:</strong> magnitude_unknown (3/3 candidates), demand_forecast, customer_communication_channel, cross_training, union_rules_review.</p>
+  <p><strong>Abstention logic:</strong> When evidence is insufficient, OBSIDIAN returns ABSTAIN — it does not force a recommendation or invent savings.</p>
+  <p><strong>Human approval:</strong> Required for all actions. No auto-execution. No invented certainty.</p>
+  <p><strong>Safety-critical flag:</strong> None in this scenario (no safety/compliance/legal hazards identified). If present, safety items would rank first in evidence prioritization.</p>
+</div>
+
+<!-- SECTION 6 -->
+<h2>6. Commercial Conversion</h2>
+<div class="cta-box">
+  <p style="font-size:1.1rem;"><strong>Request a free 10-minute demonstration using a hypothetical scenario relevant to your business.</strong></p>
+  <p style="margin:0.5rem 0;">Contact via LinkedIn: <a href="https://www.linkedin.com/in/dustinrebellato/" style="color:var(--accent);">linkedin.com/in/dustinrebellato</a></p>
+  <p style="font-size:0.85rem;color:var(--muted);">No commitment. No customer data required. Synthetic inputs only. No services or integrations beyond what is tested and demonstrated.</p>
+</div>
+
+<div class="footer">
+  <p>OBSIDIAN — Decision support for cross-functional business problems. Synthetic data. Human approval required. No auto-execution. No verified paying customer. Early development. 113 automated tests passing.</p>
+  <p>Capabilities: alternative generation (5 mechanisms), business decision evaluation, break-even thresholds, evidence prioritization, end-to-end pipeline. No real-world business improvement demonstrated.</p>
+</div>
+
+</div>
+
+<script>
+const options = {
+  demand: { title:'Demand Reduction', causal:'Lower demand → lower workload → lower overtime need.', feasible:'No (2/2 prerequisites missing)', reversible:'Yes', downside:'Medium', econ:'BENEFIT_UNKNOWN — ROI not estimable', be:'NOT CALCULABLE (benefit unknown)', missing:'demand_forecast, customer_communication_channel, magnitude_unknown', risks:'revenue_loss, customer_dissatisfaction' },
+  capacity: { title:'Capacity Reallocation', causal:'Better distribution of existing capacity → reduced peak overtime.', feasible:'No (1/2 prerequisites missing)', reversible:'Yes', downside:'Medium', econ:'BENEFIT_UNKNOWN — ROI not estimable', be:'NOT CALCULABLE (benefit unknown)', missing:'cross_training, magnitude_unknown', risks:'skill_mismatch, morale_impact' },
+  scheduling: { title:'Scheduling Redesign', causal:'Optimized schedule → fewer gaps → less unplanned overtime.', feasible:'No (1/2 prerequisites missing)', reversible:'Yes', downside:'Medium', econ:'BENEFIT_UNKNOWN — ROI not estimable', be:'NOT CALCULABLE (benefit unknown)', missing:'union_rules_review, magnitude_unknown', risks:'implementation_disruption, compliance_risk' }
+};
+function selectOption(key) {
+  document.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+  document.getElementById('opt-'+key === 'demand' ? 'demand' : key === 'capacity' ? 'capacity' : 'scheduling').classList.add('selected');
+  const d = options[key];
+  document.getElementById('detail-title').textContent = d.title;
+  document.getElementById('detail-causal').textContent = d.causal;
+  document.getElementById('d-feasible').textContent = d.feasible;
+  document.getElementById('d-reversible').textContent = d.reversible;
+  document.getElementById('d-downside').textContent = d.downside;
+  document.getElementById('d-econ').textContent = d.econ;
+  document.getElementById('d-be').textContent = d.be;
+  document.getElementById('d-missing').textContent = d.missing;
+  document.getElementById('d-risks').textContent = d.risks;
+  document.getElementById('option-detail').classList.remove('hidden');
+}
+function updateCalc() {
+  const rate = +document.getElementById('rate').value;
+  const hrs = +document.getElementById('hrs').value;
+  const cost = +document.getElementById('cost').value;
+  document.getElementById('rate-val').textContent = rate;
+  document.getElementById('hrs-val').textContent = hrs;
+  document.getElementById('cost-val').textContent = cost;
+  const weekly = rate * hrs;
+  const weeks = weekly > 0 ? Math.ceil(cost / weekly) : Infinity;
+  const result = weekly > 0 ? 'Illustrative break-even: ' + hrs + ' hrs/week at $' + rate + '/hr = $' + weekly + '/week. $' + cost + ' intervention breaks even in ' + weeks + ' weeks. This is arithmetic, not an engine output or prediction.' : 'Cannot compute: weekly benefit is zero.';
+  document.getElementById('calc-result').innerHTML = '<strong>Illustrative break-even:</strong> ' + result;
+}
+</script>
+</body>
+</html>
